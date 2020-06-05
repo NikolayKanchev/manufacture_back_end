@@ -4,25 +4,52 @@ const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 const User = require('../models/User');
+const BaseUser = require('../models/BaseUser');
+
 
 exports.signup = async(req, res, next) => {
-    
-    if (req.body.email && req.body.password) {
 
-        const users = await User.query().select().where({ email: req.body.email });
+    const { firstName, lastName, email, password, userType, planId } = req.body;
+    
+    if (email && password) {
+        const users = await BaseUser.query().select().where({ email: email });
 
         if(users.length >= 1){
             return res.status(409).json({
                 message: 'An user with this e-mail already exist!'
             });
+
         }else{
-            bcrypt.hash(req.body.password, saltRounds, async (error, hash) => {
+            bcrypt.hash(password, saltRounds, async (error, hash) => {
                 if (error) {
                     res.status(500).json({ response: "Problem hashing the password" });
                 }
-                const newUser = { ...req.body, password: hash };
-                await User.query().insert(newUser);
-                res.status(200).send({ message: "Your registration was successful!" });
+                const newBaseUser = { email: email, password: hash, plan_id: planId, is_manufacturer: userType === "manufacturer"? true: false };
+                const returVal = await BaseUser.query().insert(newBaseUser);                
+
+                if (userType === "people"){
+                    await User.query().insert({ base_user_id: returVal.id, company_id: null, name: firstName + " " + lastName});
+                    res.status(200).send({ message: "Your registration was successful!" });
+
+                }else if (userType === "company"){
+                    const Company = require('../models/Company');
+                    const { name, regNumber, address, country, img } = req.body;
+                    const company = await Company.query().insert({name, reg_number:regNumber, address, country, img});
+                    await User.query().insert({ base_user_id: returVal.id, company_id: company.id, name: firstName + " " + lastName});
+                    res.status(200).send({ message: "Your registration was successful!" });
+
+                }else if (userType === "manufacturer"){
+                    const Company = require('../models/Company');
+                    const Manufacturer = require('../models/Manufacturer');
+
+                    const { contactPerson, name, regNumber, address, country, img } = req.body;
+                    const company = await Company.query().insert({name, reg_number:regNumber, address, country, img});
+                    await Manufacturer.query().insert({ base_user_id: returVal.id, company_id: company.id, contact_person: contactPerson});
+                    res.status(200).send({ message: "Your registration was successful!" });
+
+                }else{
+                    res.status(500).send({ message: "something went wrong" });
+                }
             });
         }
 

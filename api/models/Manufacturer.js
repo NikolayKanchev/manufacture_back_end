@@ -1,8 +1,8 @@
 const { Model, snakeCaseMappers } = require('objection');
 
-class User extends Model {
+class Manufacturer extends Model {
     static get tableName() {
-        return 'user';
+        return 'manufacturer';
     }
 
     static get columnNameMappers() {
@@ -18,7 +18,7 @@ class User extends Model {
             relation: Model.HasOneThroughRelation,
             modelClass: BaseUser,
             join: {
-              from: 'user.base_user_id',
+              from: 'manufacturer.base_user_id',
               to: 'base_user.id'
             }
           },
@@ -26,7 +26,7 @@ class User extends Model {
             relation: Model.HasOneRelation,
             modelClass: Company,
             join: {
-              from: 'user.company_id',
+              from: 'manufacturer.company_id',
               to: 'company.id'
             }
           }
@@ -34,4 +34,4 @@ class User extends Model {
     }
 }
 
-module.exports = User;
+module.exports = Manufacturer;
