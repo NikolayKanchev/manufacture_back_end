@@ -8,6 +8,7 @@ exports.up = function(knex) {
         table.string('address').notNullable();
         table.string('country', 50).notNullable();
         table.string('img');
+        table.string('phone', 50).notNullable();
     });
 };
 

@@ -35,14 +35,14 @@ exports.signup = async(req, res, next) => {
                     res.status(200).send({ message: "Your registration was successful!" });
 
                 }else if (userType === "company"){
-                    const { name, regNumber, address, country, img } = req.body;
-                    const company = await Company.query().insert({name, reg_number:regNumber, address, country, img});
+                    const { name, regNumber, address, country, img, phone } = req.body;
+                    const company = await Company.query().insert({name, reg_number:regNumber, address, country, img, phone});
                     await User.query().insert({ base_user_id: returVal.id, company_id: company.id, name: firstName + " " + lastName});
                     res.status(200).send({ message: "Your registration was successful!" });
 
                 }else if (userType === "manufacturer"){
-                    const { contactPerson, name, regNumber, address, country, img } = req.body;
-                    const company = await Company.query().insert({name, reg_number:regNumber, address, country, img});
+                    const { contactPerson, name, regNumber, address, country, img, phone } = req.body;
+                    const company = await Company.query().insert({name, reg_number:regNumber, address, country, img, phone});
                     await Manufacturer.query().insert({ base_user_id: returVal.id, company_id: company.id, contact_person: contactPerson});
                     res.status(200).send({ message: "Your registration was successful!" });
 
