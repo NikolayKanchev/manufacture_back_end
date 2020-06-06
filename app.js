@@ -9,6 +9,8 @@ const Model = objection.Model;
 const knex = Knex(knexConfig.development);
 
 const usersRoutes = require('./api/routes/users');
+const plansRoutes = require('./api/routes/plans');
+
 require('dotenv').config();
 
 app.use( '/uploads', express.static('uploads'));
@@ -27,6 +29,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/users', usersRoutes);
+app.use('/plans', plansRoutes);
 
 app.use((req, res, next) =>{
     const error = new Error('Not found !');
