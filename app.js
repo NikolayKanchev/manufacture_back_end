@@ -7,6 +7,8 @@ const knexConfig = require("./knexfile.js");
 const objection = require("objection");
 const Model = objection.Model;
 const knex = Knex(knexConfig.development);
+// const populateDB = require("./api/populateDB/categories");
+
 
 const usersRoutes = require('./api/routes/users');
 const plansRoutes = require('./api/routes/plans');
@@ -57,5 +59,10 @@ app.use((error, req, res, next) =>{
         }
     });
 });
+
+// (function() {
+
+//     populateDB.addCategories();
+// })()
 
 module.exports = app;
