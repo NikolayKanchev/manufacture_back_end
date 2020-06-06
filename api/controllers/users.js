@@ -117,7 +117,7 @@ exports.login = async(req, res, next) => {
                 return res.status(200).json({
                     message: 'Auth successful',
                     token: token,
-                    data: dataToReturn
+                    usersData: dataToReturn
                 });
             }
 
