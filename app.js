@@ -10,6 +10,12 @@ const knex = Knex(knexConfig.development);
 
 const usersRoutes = require('./api/routes/users');
 const plansRoutes = require('./api/routes/plans');
+const projectsRoutes = require('./api/routes/projects');
+
+const categoriesRoutes = require('./api/routes/categories');
+const productsRoutes = require('./api/routes/products');
+const manufacturersRoutes = require('./api/routes/manufacturers');
+const detailsRoutes = require('./api/routes/details');
 
 require('dotenv').config();
 
@@ -30,6 +36,12 @@ app.use((req, res, next) => {
 
 app.use('/users', usersRoutes);
 app.use('/plans', plansRoutes);
+app.use('/projects', projectsRoutes);
+app.use('/categories', categoriesRoutes)
+app.use('/products', productsRoutes)
+app.use('/manufacturers', manufacturersRoutes)
+app.use('/details', detailsRoutes)
+
 
 app.use((req, res, next) =>{
     const error = new Error('Not found !');

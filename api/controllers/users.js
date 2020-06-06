@@ -28,7 +28,7 @@ exports.signup = async(req, res, next) => {
                     res.status(500).json({ response: "Problem hashing the password" });
                 }
                 const newBaseUser = { email: email, password: hash, plan_id: planId, is_manufacturer: userType === "manufacturer"? true: false };
-                const returVal = await BaseUser.query().insert(newBaseUser);                
+                const returVal = await BaseUser.query().insert(newBaseUser);
 
                 if (userType === "people"){
                     await User.query().insert({ base_user_id: returVal.id, company_id: null, name: firstName + " " + lastName});
