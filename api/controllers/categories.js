@@ -3,7 +3,22 @@ const Category = require('../models/Category');
 
 
 exports.getAll = async (req, res, next) => {
-    const response = await Category.query();
+    const {type} = req.params;
+    let response = "";
+
+    if (type === "categories"){
+        response = await Category.query().select().whereNull('categoryId');
+    }else{
+        response = await Category.query().select().whereNotNull('categoryId');
+    }
+
+    res.status(200).send({ ...response });
+}
+
+exports.getSubCategories = async (req, res, next) => {
+    const { category } = req.body;
+
+    const response = await Category.query().select().where({categoryId: category});    
     res.status(200).send({ ...response });
 }
 
