@@ -6,7 +6,6 @@ exports.up = function(knex) {
         table.integer('project_id').unsigned().references('project.id').onDelete('CASCADE').notNullable();
         table.integer('product_type_id').unsigned().references('product_type.id').onDelete('CASCADE').notNullable();
         table.integer('quantity').notNullable();
-        table.decimal('price', 10, 2).notNullable();
         table.string('how_often', 20).notNullable();
     });
 };

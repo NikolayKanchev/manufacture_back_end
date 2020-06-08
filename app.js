@@ -17,6 +17,8 @@ const projectsRoutes = require('./api/routes/projects');
 const categoriesRoutes = require('./api/routes/categories');
 const productsRoutes = require('./api/routes/products');
 const manufacturersRoutes = require('./api/routes/manufacturers');
+const productTypes = require('./api/routes/productTypes');
+
 
 require('dotenv').config();
 
@@ -40,6 +42,7 @@ app.use('/plans', plansRoutes);
 app.use('/projects', projectsRoutes);
 app.use('/categories', categoriesRoutes)
 app.use('/products', productsRoutes)
+app.use('/product-types', productTypes)
 app.use('/manufacturers', manufacturersRoutes)
 
 
