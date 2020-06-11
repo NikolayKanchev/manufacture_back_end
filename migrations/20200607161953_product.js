@@ -4,8 +4,6 @@ exports.up = function(knex) {
     .createTable('product', function(table){
         table.increments('id').primary();
         table.integer('product_type_id').unsigned().references('product_type.id').onDelete('CASCADE').notNullable();
-        table.string('name', 50).notNullable();
-        table.string('desc', 1000).notNullable();
         table.integer('min_order').notNullable();
         table.string('unit_type', 20).notNullable();
         table.integer('capacity').notNullable();
