@@ -7,6 +7,8 @@ class Project extends Model {
 
     static get relationMappings() {
         const LineProduct = require('./LineProduct')
+        const Offer = require('./Offer')
+
         return {
             lines: {
                 relation: Model.HasManyRelation,
@@ -14,6 +16,14 @@ class Project extends Model {
                 join: {
                     from: 'project.id',
                     to: 'line_product.project_id'
+                }
+            },
+            offers: {
+                relation: Model.HasManyRelation,
+                modelClass: Offer,
+                join: {
+                    from: 'project.id',
+                    to: 'offer.project_id'
                 }
             }
         }

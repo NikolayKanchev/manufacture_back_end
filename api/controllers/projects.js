@@ -58,8 +58,11 @@ exports.editProject = async (req, res, next) => {
 
 
 exports.getProjects = async(req, res, next) => {
+    const { id } = req.params;
+    const projects = (id === "all") ? 
+            await Project.query() :await Project.query().select().where({ userId: req.params.id });
 
-    const projects = await Project.query().select().where({ userId: req.params.id });
+    // const projects = await Project.query().select().where({ userId: req.params.id });
 
     const loopTrueObjects = () => {
         const promises = []; 

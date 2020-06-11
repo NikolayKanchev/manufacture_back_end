@@ -12,6 +12,7 @@ class Manufacturer extends Model {
     static get relationMappings() {
         const BaseUser = require('./BaseUser');
         const Company = require('./Company');
+        const Offer = require('./Offer');
 
         return {
           baseUser: {
@@ -28,6 +29,14 @@ class Manufacturer extends Model {
             join: {
               from: 'manufacturer.company_id',
               to: 'company.id'
+            }
+          },
+          offers: {
+            relation: Model.HasManyRelation,
+            modelClass: Offer,
+            join: {
+                from: 'manufacturer.id',
+                to: 'offer.manufacturer_id'
             }
           }
         };
