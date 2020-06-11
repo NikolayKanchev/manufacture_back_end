@@ -96,9 +96,9 @@ exports.deleteProject = async (req, res, next) => {
 }
 
 exports.getById = async (req, res, next) => {
-    const id = req.params.id;
-    const project = await Project.query().findById(id);
-    project.lines = await LineProduct.query().select().where({ projectId: project.id }).withGraphFetched('type');
+    const id = req.params.id;    
+    const project = await Project.query().findById(id).withGraphFetched('offers');
+    project.lines = await LineProduct.query().select().where({ projectId: id }).withGraphFetched('type'); 
     res.status(200).json(project)
 }
 
