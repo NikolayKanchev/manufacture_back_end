@@ -13,6 +13,7 @@ class Manufacturer extends Model {
         const BaseUser = require('./BaseUser');
         const Company = require('./Company');
         const Offer = require('./Offer');
+        const Product = require('./Product');
 
         return {
           baseUser: {
@@ -37,6 +38,14 @@ class Manufacturer extends Model {
             join: {
                 from: 'manufacturer.id',
                 to: 'offer.manufacturer_id'
+            }
+          },
+          products: {
+            relation: Model.HasManyRelation,
+            modelClass: Product,
+            join: {
+                from: 'manufacturer.id',
+                to: 'product.manufacturer_id'
             }
           }
         };

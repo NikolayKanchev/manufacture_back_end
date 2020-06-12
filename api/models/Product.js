@@ -5,6 +5,21 @@ class Product extends Model {
         return 'product';
     }
 
+    static get relationMappings() {
+        const ProductType = require('./ProductType');
+
+        return {
+          type: {
+            relation: Model.HasOneRelation,
+            modelClass: ProductType,
+            join: {
+              from: 'product.product_type_id',
+              to: 'product_type.id'
+            }
+          }
+        };
+    }
+
     static get columnNameMappers() {
         return snakeCaseMappers();
     }

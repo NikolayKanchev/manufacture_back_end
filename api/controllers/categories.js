@@ -5,13 +5,12 @@ const Category = require('../models/Category');
 exports.getAll = async (req, res, next) => {
     const {type} = req.params;
     let response = "";
-
+    
     if (type === "categories"){
         response = await Category.query().select().whereNull('categoryId');
     }else{
         response = await Category.query().select().whereNotNull('categoryId');
     }
-
     res.status(200).send({ ...response });
 }
 

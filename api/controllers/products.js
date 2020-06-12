@@ -1,7 +1,6 @@
 require('dotenv').config();
 const Product = require('../models/Product');
 const ProductType = require('../models/ProductType');
-const ManufacturersProducts = require('../models/ManufacturersProducts');
 
 
 exports.getAll = async(req, res, next) => {
@@ -12,32 +11,9 @@ exports.getAll = async(req, res, next) => {
 }
 
 exports.getManufacturersProducts = async(req, res, next) => {
-    const { id } = req.params;    
-    const response = await ManufacturersProducts.query()
-        .select().where({ manufacturerId: id })
-        .withGraphFetched('product');
-    
-    const loopTrueObjects = () => {
-        const promises = []; 
-
-        response.map( async (p) => {
-            promises.push(new Promise(async (resolve) => {
-                p.product.type = await ProductType.query()
-                    .findById(p.product.productTypeId);
-                resolve(p);
-            }))
-        })
-
-        Promise.all(promises)
-        .then((products) => {                                         
-            res.status(200).json({ products });
-        })
-        .catch((e) => {
-            console.log(e);
-        });
-    }
-    
-    loopTrueObjects();
+    const { id } = req.params;
+    const products = await Product.query().select().where({ manufacturerId: id }).withGraphFetched('type');    
+    res.status(200).json({ products });
 }
 
 exports.addOne = async (req, res, next) => {
@@ -51,12 +27,12 @@ exports.addOne = async (req, res, next) => {
             name: product.type.name, desc: product.type.desc 
         });        
     }
-    const newProduct = await Product.query().insert({ 
+    await Product.query().insert({
+        manufacturerId: product.manufacturerId,
         productTypeId: type.id, minOrder: product.minOrder, 
         unitType: product.unitType, capacity: product.capacity, 
         capacityPeriod: product.capacityPeriod 
-    });        
-    const newLine = await ManufacturersProducts.query().insert({ 
-        manufacturerId: product.manufacturerId, productId: newProduct.id });        
-    res.status(200).send({ message: "OK" });
+    }).then(
+            res.status(200).send({ message: "OK" })
+    );
 }
