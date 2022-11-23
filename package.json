@@ -29,6 +29,6 @@
     "nodemailer": "^6.3.0",
     "nodemon": "^1.19.2",
     "objection": "^2.1.0",
-    "socket.io": "^2.3.0"
+    "socket.io": "^2.5.0"
   }
 }
